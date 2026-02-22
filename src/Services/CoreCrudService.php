@@ -27,7 +27,7 @@ class CoreCrudService
      */
     protected function resolveResource(): string
     {
-        $serviceName = (new ReflectionClass($this))->getShortName(); // e.g. UserService
+        $serviceName = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
         $resourceName = Str::replaceLast('Service', 'Resource', $serviceName); // → UserResource
         $resourceClass = "App\\Http\\Resources\\{$resourceName}";
 
