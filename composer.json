@@ -1,0 +1,39 @@
+{
+    "name": "rizkussef/laravel-core-crud",
+    "description": "Core reusable CRUD operations for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "keywords": [
+        "laravel",
+        "crud",
+        "laravel crud generator",
+        "laravel core crud",
+        "laravel base crud",
+        "laravel crud operations"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rizkussef\\LaravelCoreCrud\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "RizkUssef",
+            "email": "rizkusgt67@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rizkussef\\LaravelCoreCrud\\CoreCrudServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^9.0|^10.0|^11.0"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
