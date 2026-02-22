@@ -1,20 +1,19 @@
 <?php
 
 namespace Rizkussef\LaravelCoreCrud\Services;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 class CoreCrudService
 {
-    protected Model $model;
+    protected $model;
     public function __construct()
     {
         if (!isset($this->model)) {
             $this->model = $this->resolveModel();
         }
     }
-    public function resolveModel(): Model
+    public function resolveModel()
     {
-        $serviceName = (new ReflectionClass($this))->getShortName(); // e.g. UserService
+        $serviceName = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
         $modelName = Str::replaceLast('Service', '', $serviceName); // → Post
         $modelClass = "App\\Models\\{$modelName}";
         if (!class_exists($modelClass)) {
