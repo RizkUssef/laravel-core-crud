@@ -18,8 +18,5 @@ class CoreCrudServiceProvider extends ServiceProvider
             __DIR__ . '/config/core-crud.php',
             'core-crud'
         );
-        $this->app->bind('CoreCrudService', function ($app) {
-            return new CoreCrudService();
-        });
     }
 }
