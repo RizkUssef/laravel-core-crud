@@ -10,11 +10,11 @@
 
 A clean, scalable **Core CRUD architecture for Laravel**, built around a reusable **Base Service** and **Base Controller** with automatic:
 
-* ✅ Model Resolution
-* ✅ Resource Resolution
-* ✅ Collection Handling
-* ✅ Pagination
-* ✅ API
+- ✅ Model Resolution
+- ✅ Resource Resolution
+- ✅ Collection Handling
+- ✅ Pagination
+- ✅ API
 
 Designed to eliminate repetitive CRUD logic while keeping your application clean and maintainable.
 
@@ -113,9 +113,15 @@ namespace App\Http\Controllers;
 use App\Services\UserService;
 use Rizkussef\LaravelCoreCrud\Http\Controllers\CoreCrudController;
 
-class UserController extends CoreCrudController {}
+class UserController extends CoreCrudController {
+    public function __construct(UserService $service)
+    {
+        parent::__construct($service);
+    }
+}
 ```
-If the resource does not exist, raw model data is returned.
+
+Just Inject the specific service for this controller.
 
 ---
 
@@ -123,12 +129,12 @@ If the resource does not exist, raw model data is returned.
 
 The BaseCrudController provides:
 
-* `index()` – List records
-* `getPaginated($perPage)` - Paginate list of records
-* `show($id)` – Show single record
-* `store(Request $request)` – Create record
-* `update(Request $request, $id)` – Update record
-* `destroy($id)` – Delete record
+- `index()` – List records
+- `getPaginated($perPage)` - Paginate list of records
+- `show($id)` – Show single record
+- `store(Request $request)` – Create record
+- `update(Request $request, $id)` – Update record
+- `destroy($id)` – Delete record
 
 All logic is handled inside **CoreCrudService**.
 
@@ -149,6 +155,14 @@ return UserResource::collection($users);
 ```
 
 Automatically handled by the base service.
+
+### No Resource
+
+```php
+// No UserResource exists
+return $user; // returns full user model data
+```
+If the corresponding Resource class does not exist, the base controller will return the raw model data instead of a resource.
 
 ---
 
@@ -206,10 +220,10 @@ CoreCrudService is bound in the container via the Service Provider, so it can be
 
 You can extend:
 
-* BaseCrudController
-* CoreCrudService
-* API Response Trait
-* Pagination configuration
+- BaseCrudController
+- CoreCrudService
+- API Response Trait
+- Pagination configuration
 
 ---
 
@@ -226,4 +240,5 @@ MIT License
 ---
 
 # 👨‍💻 Author
+
 Made with ❤️ by Rizk Ussef
