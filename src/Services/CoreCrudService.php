@@ -1,7 +1,9 @@
 <?php
 
 namespace Rizkussef\LaravelCoreCrud\Services;
+
 use Illuminate\Support\Str;
+
 class CoreCrudService
 {
     protected $model;
@@ -25,14 +27,15 @@ class CoreCrudService
     /**
      * Guess Resource class based on current service name
      */
-    protected function resolveResource(): string
+    protected function resolveResource(): string|null
     {
         $serviceName = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
         $resourceName = Str::replaceLast('Service', 'Resource', $serviceName); // → UserResource
         $resourceClass = "App\\Http\\Resources\\{$resourceName}";
 
         if (!class_exists($resourceClass)) {
-            throw new \Exception("Resource {$resourceClass} does not exist.");
+            // throw new \Exception("Resource {$resourceClass} does not exist.");
+            return null;
         }
         return $resourceClass;
     }
@@ -42,12 +45,15 @@ class CoreCrudService
     protected function applyResource($data, bool $isCollection = false): mixed
     {
         $resourceClass = $this->resolveResource();
+        if ($resourceClass === null) {
+            return $data;
+        } else {
+            if ($isCollection) {
+                return $resourceClass::collection($data);
+            }
 
-        if ($isCollection) {
-            return $resourceClass::collection($data);
+            return new $resourceClass($data);
         }
-
-        return new $resourceClass($data);
     }
     public function index()
     {
