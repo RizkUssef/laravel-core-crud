@@ -515,13 +515,29 @@ And you can use:
 ```php
 Route::apiResource('users', UserController::class);
 ```
+---
 
-# 📜 License
+# 👨‍💻 Author & Support
 
-MIT License
+**Developed by Rizk Ussef**
+
+A fullstack developer passionate about creating clean, maintainable architecture patterns and reusable solutions for building scalable applications across frontend and backend ecosystems.
+
+### Get in Touch
+
+- **GitHub:** [@rizkussef](https://github.com/rizkussef)
+- **Email:** rizk.ussef@gmail.com
+- **Issues & Feedback:** [GitHub Issues](https://github.com/rizkussef/laravel-core-crud/issues)
 
 ---
 
-# 👨‍💻 Author
+# 🤝 Contributing
 
-Made with ❤️ by Rizk Ussef
+Contributions are welcome! If you find bugs or have feature suggestions, please open an issue or submit a pull request.
+
+---
+
+# 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
