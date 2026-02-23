@@ -2,7 +2,7 @@
 
 namespace Rizkussef\LaravelCoreCrud\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Rizkussef\LaravelCoreCrud\Services\CoreCrudService;
 use Rizkussef\LaravelCoreCrud\Traits\ApiResponse;
 use Illuminate\Support\Str;
