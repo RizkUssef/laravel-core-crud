@@ -3,9 +3,13 @@
 namespace Rizkussef\LaravelCoreCrud\Services;
 
 use Illuminate\Support\Str;
+use Rizkussef\LaravelCoreCrud\Traits\FilterQueryTrait;
+use Rizkussef\LaravelCoreCrud\Traits\RelationshipsQueryTrait;
 
 class CoreCrudService
 {
+    use FilterQueryTrait;
+    use RelationshipsQueryTrait;
     protected $model;
     public function __construct()
     {
@@ -13,56 +17,65 @@ class CoreCrudService
             $this->model = $this->resolveModel();
         }
     }
+    /**
+     * Guess Model class based on current service name
+     */
     public function resolveModel()
     {
-        $serviceName = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
-        $modelName = Str::replaceLast('Service', '', $serviceName); // → Post
-        $modelClass = "App\\Models\\{$modelName}";
-        if (!class_exists($modelClass)) {
-            throw new \Exception("Model {$modelClass} does not exist.");
+        $service_name = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
+        $model_name = Str::replaceLast('Service', '', $service_name); // → Post
+        $model_class = "App\\Models\\{$model_name}";
+        if (!class_exists($model_class)) {
+            throw new \Exception("Model {$model_class} does not exist.");
         }
 
-        return new $modelClass;
+        return new $model_class;
     }
     /**
      * Guess Resource class based on current service name
      */
     protected function resolveResource(): string|null
     {
-        $serviceName = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
-        $resourceName = Str::replaceLast('Service', 'Resource', $serviceName); // → UserResource
-        $resourceClass = "App\\Http\\Resources\\{$resourceName}";
+        $service_name = (new \ReflectionClass($this))->getShortName(); // e.g. UserService
+        $resource_name = Str::replaceLast('Service', 'Resource', $service_name); // → UserResource
+        $resource_class = "App\\Http\\Resources\\{$resource_name}";
 
-        if (!class_exists($resourceClass)) {
-            // throw new \Exception("Resource {$resourceClass} does not exist.");
+        if (!class_exists($resource_class)) {
+            // throw new \Exception("Resource {$resource_class} does not exist.");
             return null;
         }
-        return $resourceClass;
+        return $resource_class;
     }
     /**
      * Apply resource to data
      */
-    protected function applyResource($data, bool $isCollection = false): mixed
+    protected function applyResource($data, bool $is_collection = false): mixed
     {
-        $resourceClass = $this->resolveResource();
-        if ($resourceClass === null) {
+        $resource_class = $this->resolveResource();
+        if ($resource_class === null) {
             return $data;
         } else {
-            if ($isCollection) {
-                return $resourceClass::collection($data);
+            if ($is_collection) {
+                return $resource_class::collection($data);
             }
 
-            return new $resourceClass($data);
+            return new $resource_class($data);
         }
     }
-    public function index()
+    public function index($filters = [], $relationships = [])
     {
-        $data = $this->model->all();
+        $query = $this->model->newQuery();
+        $query = $this->applyFilters($query, $filters);
+        $query = $this->applyRelationships($query, $relationships);
+        $data = $query->get();
         return $this->applyResource($data, true);
     }
-    public function getPaginated($perPage = 15)
+    public function getPaginated($perPage = 15, $filters = [], $relationships = [])
     {
-        $data = $this->model->paginate($perPage);
+        $query = $this->model->newQuery();
+        $query = $this->applyFilters($query, $filters);
+        $query = $this->applyRelationships($query, $relationships);
+        $data = $query->paginate($perPage);
         return $this->applyResource($data, true);
     }
     public function store($data)
@@ -70,9 +83,12 @@ class CoreCrudService
         $data = $this->model->create($data);
         return $this->applyResource($data);
     }
-    public function show($id)
+    public function show($id,  $filters = [], $relationships = [])
     {
-        $data = $this->model->findOrFail($id);
+        $query = $this->model->newQuery();
+        $query = $this->applyFilters($query, $filters);
+        $query = $this->applyRelationships($query, $relationships);
+        $data = $query->findOrFail($id);
         return $this->applyResource($data);
     }
     public function update($id, $data)
