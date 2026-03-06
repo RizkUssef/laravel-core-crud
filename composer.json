@@ -1,6 +1,6 @@
 {
   "name": "rizkussef/laravel-core-crud",
-  "description": "A clean, scalable Core CRUD architecture for Laravel with advanced filtering, eager-loading relationships, and automatic resource resolution",
+  "description": "A clean, scalable Core CRUD package for the Service-based architecture for Laravel with advanced filtering, eager-loading relationships, and automatic resource resolution",
   "type": "library",
   "license": "MIT",
   "homepage": "https://github.com/rizkussef/laravel-core-crud",
@@ -9,6 +9,8 @@
     "url": "https://github.com/rizkussef/laravel-core-crud.git"
   },
   "keywords": [
+    "laravel crud operations",
+    "laravel crud package",
     "laravel",
     "crud",
     "service-based-architecture",
@@ -26,7 +28,6 @@
     "laravel crud generator",
     "laravel api core crud",
     "laravel base crud api",
-    "laravel crud operations "
   ],
   "authors": [
     {
